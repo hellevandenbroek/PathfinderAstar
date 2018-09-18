@@ -8,14 +8,9 @@ import java.util.ArrayList;
 
 
 public class Main {
-    private static ArrayList<Node> nodes = new ArrayList<Node>();
-    private Node startnode;
-    private Node endnode;
-
 
     public static void main(String[] args) throws IOException {
         Program p = new Program();
         p.run();
     }
-
 }

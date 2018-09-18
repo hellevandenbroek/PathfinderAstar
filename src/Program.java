@@ -10,7 +10,6 @@ public class Program {
     Node start;
     Node end;
 
-    //20 + 1
     String board = "";
     String visboard = "";
 
@@ -20,7 +19,7 @@ public class Program {
 
     //metode som leser fra txt fil og lagrer innholdet som en string i board
     public void readBoard() throws IOException {
-        File file = new File("./boards/board-1-3.txt");
+        File file = new File("./boards/board-1-1.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         while ((st = br.readLine()) != null) {
@@ -39,12 +38,14 @@ public class Program {
         int bredde = 20;
         for (int i = 0; i < board.length(); i++) {
             char c = board.charAt(i);
+
             if (i % (bredde) == 0 && i!=0) {
                 y ++;
                 x= 1;
             }
             Node n = new Node(x, y, c);
             nodes.add(n);
+            //Sjekker om noden er start eller sluttnode
             if (c == 'A') {
                 this.start = n;
             }
