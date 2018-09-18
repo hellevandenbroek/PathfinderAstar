@@ -2,10 +2,11 @@ public class Node {
 
     int y;
     int x;
-    int cost;
+    int nodecost;
     int distance;
     int estimate;
     String type;
+    Node parent;
 
     public Node(int x, int y, char z) {
         this.x = x;
@@ -25,6 +26,13 @@ public class Node {
         }
     }
 
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public int getNodecost() {
+        return nodecost;
+    }
 
     public Integer getX() {
         return this.x;
