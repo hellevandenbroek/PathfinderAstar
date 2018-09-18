@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class Program {
 
     ArrayList<Node>nodes = new ArrayList<Node>();
-
     Node start;
     Node end;
 
@@ -19,100 +18,63 @@ public class Program {
         // TODO Auto-generated constructor stub
     }
 
+    //metode som leser fra txt fil og lagrer innholdet som en string i board
     public void readBoard() throws IOException {
         File file = new File("./boards/board-1-3.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
-        //skriver ut board og lagrer den i board
         String st;
         while ((st = br.readLine()) != null) {
             this.board += st;
             this.visboard += "\n" + st;
-
         }
-        //just for prettyness
         System.out.println(visboard);
-        //System.out.println(board);
-        //System.out.println(board.length());
-        //System.out.println(visboard.length());
-        classifyNodes();
         br.close();
+        classifyNodes();
     }
 
+    //metode som finner leser gjennom board og lager noder. Sjekker også om vi finner A/B (start/slutt)
     public void classifyNodes() {
         int x = 1;
         int y = 1;
         int bredde = 20;
         for (int i = 0; i < board.length(); i++) {
             char c = board.charAt(i);
-
-            //sjekker om vi har funnet start eller slutt
-
             if (i % (bredde) == 0 && i!=0) {
                 y ++;
                 x= 1;
             }
-
             Node n = new Node(x, y, c);
             nodes.add(n);
-
             if (c == 'A') {
                 this.start = n;
             }
             else if (c == 'B'){
                 this.end = n;
             }
-
             x ++;
         }
-
-        //for pretty printing
-
-        int sx = start.getX();
-        int sy = start.getY();
-        int ex = end.getX();
-        int ey = end.getY();
-
-        System.out.println("A is located at: (" + sx + "," + sy + ")");
-        System.out.println("B is located at: (" + ex + "," + ey + ")");
-
-    /*
-    for (int i = 0; i < nodes.size(); i ++) {
-        System.out.println(nodes.get(i).getType());
-    }*/
-
-        estimateManhattan(nodes.get(7));
-
+        getEstimates();
     }
 
+    //kaller en estimeringsmetode på alle noder i nodes
+    public void getEstimates(){
+        for (int i = 0; i < nodes.size(); i++){
+            estimateManhattan(nodes.get(i));
+        }
+    }
+
+    //regner ut Manhattan distance fra node n til sluttnoden
     public void estimateManhattan(Node n) {
         int sx = n.getX();
         int sy = n.getY();
         int ex = end.getX();
         int ey = end.getY();
-        System.out.println("A is located at: (" + sx + "," + sy + ")");
-        System.out.println("B is located at: (" + ex + "," + ey + ")");
-        int dx;
-        int dy;
-
-        if (sx > ex) {
-            dx = sx-ex;
-        }
-        else {
-            dx = ex-sx;
-        }
-        if (sy > ey) {
-            dy = sy-ey;
-        }
-        else {
-            dy = ey-sy;
-        }
-
-
-        System.out.println(dx + ", " + dy);
-        int d = dx+dy;
-        System.out.println("Manhattan distance: " + d);
+        int dx = Math.abs(sx-ex);
+        int dy = Math.abs(sy-ey);
+        int distance = dx+dy;
+        //setter estimatet for noden
+        n.estimate = distance;
     }
-
 
     public void run() throws IOException {
         readBoard();
