@@ -80,5 +80,8 @@ public class Program {
 
     public void run() throws IOException {
         readBoard();
+        Solve s = new Solve(start, nodes, end);
+        s.getNeighbors(nodes.get(5));
+
     }
 }

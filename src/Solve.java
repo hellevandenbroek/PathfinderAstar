@@ -24,6 +24,8 @@ public class Solve {
         List<Node> closedSet = new ArrayList<Node>();
         List<Node> openSet = new ArrayList<Node>();
 
+
+
         openSet.add(start);
 
 
@@ -44,6 +46,8 @@ public class Solve {
         ArrayList<Node> nb = getNeighbors(current);
 
 
+
+        //dette funker ikke i det hele tatt. fiks
         for (int i = 0; i < nb.size(); i++) {
             Node neighbor = nb.get(i);
             if (closedSet.contains(neighbor)) {
@@ -56,6 +60,7 @@ public class Solve {
         }
     }
 
+    //funker dette?
     public ArrayList<Node> getNeighbors(Node n){
         ArrayList<Node> neighbors = new ArrayList<Node>();
         int x = n.getX();
@@ -67,6 +72,11 @@ public class Solve {
                 neighbors.add(nodes.get(i));
             }
         }
+        for (Node no : neighbors){
+            System.out.println(no.getX());
+            System.out.println(no.getY());
+        }
+        System.out.println(neighbors);
         return neighbors;
     }
 }
