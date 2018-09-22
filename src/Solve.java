@@ -1,77 +1,77 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solve {
 
-    Node start;
-    Node prev;
-    Node current;
-    Node goal;
+    private Node start;
+    private Node current;
 
-    ArrayList<Node> nodes = new ArrayList<Node>();
+    private ArrayList<Node> nodes = new ArrayList<>();
 
 
-    public Solve(Node start, ArrayList nodes, Node goal){
+    public Solve(Node start, ArrayList nodes){
         start.setDistance(0);
         this.nodes = nodes;
-        this.goal = goal;
     }
 
     public void aStar(){
 
         //open set
-        List<Node> closedSet = new ArrayList<Node>();
-        List<Node> openSet = new ArrayList<Node>();
-
-
+        List<Node> closedSet = new ArrayList<>();
+        List<Node> openSet = new ArrayList<>();
 
         openSet.add(start);
 
-
         while (openSet.size() != 0) {
-            for (int i = 0; i < openSet.size(); i++) {
-                Node n = openSet.get(i);
+            for (Node n : openSet) {
                 if ((current == null) | (n.getNodecost() < current.getNodecost())) {
                     current = n;
                 }
             }
+            openSet.remove(current);
+            closedSet.add(current);
         }
-
-        openSet.remove(current);
-        closedSet.add(current);
-
 
         //henter ut og lagrer alle naboer til noden
         ArrayList<Node> nb = getNeighbors(current);
 
 
-
         //dette funker ikke i det hele tatt. fiks
-        for (int i = 0; i < nb.size(); i++) {
-            Node neighbor = nb.get(i);
+        for (Node neighbor : nb) {
             if (closedSet.contains(neighbor)) {
                 continue;
             }
+            if (neighbor.getType() == "closed") {
+                continue;
+            }
+
+            int tentative = current.getDistance() + neighbor.getNodecost();
+
+
             if (!openSet.contains(neighbor)) {
                 openSet.add(neighbor);
+            } else if (tentative >= neighbor.getDistance()) {
+                continue;
             }
-            this.prev = current;
+
+            neighbor.setParent(current);
+            neighbor.setDistance(tentative);
         }
     }
 
-    //funker dette?
-    public ArrayList<Node> getNeighbors(Node n){
-        ArrayList<Node> neighbors = new ArrayList<Node>();
+    //Function that gets all the immediate neighbors for a node.
+    private ArrayList<Node> getNeighbors(Node n){
+        ArrayList<Node> neighbors = new ArrayList<>();
         int x = n.getX();
         int y = n.getY();
-        for (int i = 0; i < nodes.size(); i++){
-            int ix = nodes.get(i).getX();
-            int iy = nodes.get(i).getY();
-            if (((x == ix & y == iy+1) | (x== ix && y == iy-1)) | ((y == iy & x == ix +1) | (y == iy & x == ix-1))){
-                neighbors.add(nodes.get(i));
+        for (Node node : nodes) {
+            int ix = node.getX();
+            int iy = node.getY();
+            if (((x == ix & y == iy + 1) | (x == ix && y == iy - 1)) | ((y == iy & x == ix + 1) | (y == iy & x == ix - 1))) {
+                neighbors.add(node);
             }
         }
+        //Only for debugging, remember to remove
         for (Node no : neighbors){
             System.out.println(no.getX());
             System.out.println(no.getY());

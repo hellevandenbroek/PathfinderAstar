@@ -45,4 +45,20 @@ public class Node {
     public String getType() {
         return this.type;
     }
+
+    public int getDistance() {
+        return this.distance;
+    }
+
+    public int getEstimate(){
+        return this.estimate;
+    }
+
+    public void setEstimate(int estimate) {
+        this.estimate = estimate;
+    }
+
+    public void setParent(Node parent) {
+        this.parent = parent;
+    }
 }

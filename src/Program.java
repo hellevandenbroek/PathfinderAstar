@@ -3,23 +3,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Program {
 
-    ArrayList<Node>nodes = new ArrayList<Node>();
-    Node start;
-    Node end;
+    private ArrayList<Node>nodes = new ArrayList<Node>();
+    private Node start;
+    private Node end;
 
-    String board = "";
-    String visboard = "";
+    private String board = "";
+    private String visboard = "";
 
     public Program() {
         // TODO Auto-generated constructor stub
     }
 
     //metode som leser fra txt fil og lagrer innholdet som en string i board
-    public void readBoard() throws IOException {
+    private void readBoard() throws IOException {
         File file = new File("./boards/board-1-1.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
@@ -33,7 +32,7 @@ public class Program {
     }
 
     //metode som finner leser gjennom board og lager noder. Sjekker også om vi finner A/B (start/slutt)
-    public void classifyNodes() {
+    private void classifyNodes() {
         int x = 1;
         int y = 1;
         int bredde = 20;
@@ -46,7 +45,9 @@ public class Program {
             }
             Node n = new Node(x, y, c);
             nodes.add(n);
-            //Sjekker om noden er start eller sluttnode
+
+
+            //checks whether node is end or startnode
             if (c == 'A') {
                 this.start = n;
             }
@@ -58,15 +59,15 @@ public class Program {
         getEstimates();
     }
 
-    //kaller en estimeringsmetode på alle noder i nodes
-    public void getEstimates(){
+    //gets an estimate on all nodes
+    private void getEstimates(){
         for (int i = 0; i < nodes.size(); i++){
             estimateManhattan(nodes.get(i));
         }
     }
 
     //regner ut Manhattan distance fra node n til sluttnoden
-    public void estimateManhattan(Node n) {
+    private void estimateManhattan(Node n) {
         int sx = n.getX();
         int sy = n.getY();
         int ex = end.getX();
@@ -80,8 +81,7 @@ public class Program {
 
     public void run() throws IOException {
         readBoard();
-        Solve s = new Solve(start, nodes, end);
-        s.getNeighbors(nodes.get(5));
-
+        Solve s = new Solve(start, nodes);
+        s.aStar();
     }
 }
