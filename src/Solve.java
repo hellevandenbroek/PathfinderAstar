@@ -7,14 +7,15 @@ public class Solve {
     Node start;
     Node prev;
     Node current;
+    Node goal;
 
     ArrayList<Node> nodes = new ArrayList<Node>();
 
 
-    public Solve(Node start, ArrayList nodes){
+    public Solve(Node start, ArrayList nodes, Node goal){
         start.setDistance(0);
-        this.current = start;
         this.nodes = nodes;
+        this.goal = goal;
     }
 
     public void aStar(){
@@ -22,33 +23,36 @@ public class Solve {
         //open set
         List<Node> closedSet = new ArrayList<Node>();
         List<Node> openSet = new ArrayList<Node>();
+
+        openSet.add(start);
+
+
         while (openSet.size() != 0) {
             for (int i = 0; i < openSet.size(); i++) {
-                if (openSet.get(i).getNodecost() < current.getNodecost()) {
-                    current = openSet.get(i);
+                Node n = openSet.get(i);
+                if ((current == null) | (n.getNodecost() < current.getNodecost())) {
+                    current = n;
                 }
             }
-            openSet.remove(current);
-            closedSet.add(current);
+        }
+
+        openSet.remove(current);
+        closedSet.add(current);
 
 
+        //henter ut og lagrer alle naboer til noden
+        ArrayList<Node> nb = getNeighbors(current);
 
 
-            ArrayList<Node> nb = getNeighbors(current);
-
-
-            for (int i = 0; i < nb.size(); i++) {
-                Node neighbor = nb.get(i);
-                if (closedSet.contains(neighbor)) {
-                    continue;
-                }
-                if (!openSet.contains(neighbor)) {
-                    openSet.add(neighbor);
-                //} else if (tentative_gScore >= neighbor.gScore) {
-                   // continue;
-                }
-                this.prev = current;
+        for (int i = 0; i < nb.size(); i++) {
+            Node neighbor = nb.get(i);
+            if (closedSet.contains(neighbor)) {
+                continue;
             }
+            if (!openSet.contains(neighbor)) {
+                openSet.add(neighbor);
+            }
+            this.prev = current;
         }
     }
 
