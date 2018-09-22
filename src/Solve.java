@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,39 +21,43 @@ public class Solve {
         List<Node> openSet = new ArrayList<>();
         openSet.add(start);
 
+
+        //NB: INFINITE LOOP. DO NOT RUN
         while (openSet.size() != 0) {
             for (Node n : openSet) {
                 if ((current == null) || (n.getNodecost() < current.getNodecost())) {
                     current = n;
                 }
             }
+
+            if (current.getType().equals("end")){
+                this.goal = current;
+                break;
+            }
             openSet.remove(current);
             closedSet.add(current);
-        }
 
-        //henter ut og lagrer alle naboer til noden
-        ArrayList<Node> nb = getNeighbors(current);
+            //henter ut og lagrer alle naboer til noden
+            ArrayList<Node> nb = getNeighbors(current);
+            //Finding shortest path
+            for (Node neighbor : nb) {
+                if (closedSet.contains(neighbor)) {
+                    continue;
+                }
+                if (neighbor.getType().equals("closed")) {
+                    continue;
+                }
 
-        //Finding shortest path
-        for (Node neighbor : nb) {
-            if (closedSet.contains(neighbor)) {
-                continue;
+                int tentative = current.getDistance() + neighbor.getNodecost();
+
+                if (!openSet.contains(neighbor)) {
+                    openSet.add(neighbor);
+                } else if (tentative >= neighbor.getDistance()) {
+                    continue;
+                }
+                neighbor.setParent(current);
+                neighbor.setDistance(tentative);
             }
-            if (neighbor.getType().equals("closed")) {
-                continue;
-            }
-
-            int tentative = current.getDistance() + neighbor.getNodecost();
-
-
-            if (!openSet.contains(neighbor)) {
-                openSet.add(neighbor);
-            } else if (tentative >= neighbor.getDistance()) {
-                continue;
-            }
-
-            neighbor.setParent(current);
-            neighbor.setDistance(tentative);
         }
         return getSolution();
     }
@@ -72,23 +75,19 @@ public class Solve {
             }
         }
         //Only for debugging, remember to remove
-        for (Node no : neighbors){
-            System.out.println(no.getX());
-            System.out.println(no.getY());
-        }
-        System.out.println(neighbors);
         return neighbors;
     }
 
     private ArrayList<Node> getSolution(){
         ArrayList<Node> solution = new ArrayList<>();
-        solution.add(goal);
-        Node parent = goal.getParent();
+        solution.add(this.goal);
+        Node parent = this.goal.getParent();
 
         while (parent != null){
             solution.add(parent);
             parent = parent.getParent();
         }
+        System.out.println(solution);
         return solution;
     }
 }
