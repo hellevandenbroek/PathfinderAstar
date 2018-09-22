@@ -1,12 +1,12 @@
 public class Node {
 
-    int y;
-    int x;
-    int nodecost;
-    int distance;
-    int estimate;
-    String type;
-    Node parent;
+    private int y;
+    private int x;
+    private int nodecost;
+    private int distance;
+    private int estimate;
+    private String type;
+    private Node parent;
 
     public Node(int x, int y, char z) {
         this.x = x;
@@ -60,5 +60,9 @@ public class Node {
 
     public void setParent(Node parent) {
         this.parent = parent;
+    }
+
+    public Node getParent() {
+        return parent;
     }
 }

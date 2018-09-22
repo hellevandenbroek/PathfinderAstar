@@ -9,15 +9,18 @@ public class Program {
     private ArrayList<Node>nodes = new ArrayList<Node>();
     private Node start;
     private Node end;
+    //This is the board as a string.
+    private String board;
+    private String visboard;
 
-    private String board = "";
-    private String visboard = "";
-
-    public Program() {
-        // TODO Auto-generated constructor stub
+    public void run() throws IOException {
+        readBoard();
+        ArrayList<Node> solution;
+        solution = new Solve(start, end, nodes).aStar();
+        System.out.println(solution);
     }
 
-    //metode som leser fra txt fil og lagrer innholdet som en string i board
+    //Reading from txt file and saving content as string
     private void readBoard() throws IOException {
         File file = new File("./boards/board-1-1.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -76,12 +79,6 @@ public class Program {
         int dy = Math.abs(sy-ey);
         int distance = dx+dy;
         //setter estimatet for noden
-        n.estimate = distance;
-    }
-
-    public void run() throws IOException {
-        readBoard();
-        Solve s = new Solve(start, nodes);
-        s.aStar();
+        n.setEstimate(distance);
     }
 }

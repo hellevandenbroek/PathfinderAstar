@@ -1,30 +1,30 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solve {
 
     private Node start;
+    private Node goal;
     private Node current;
-
     private ArrayList<Node> nodes = new ArrayList<>();
 
-
-    public Solve(Node start, ArrayList nodes){
+    public Solve(Node start, Node goal, ArrayList nodes) {
         start.setDistance(0);
+        this.start = start;
+        this.goal = goal;
         this.nodes = nodes;
+        aStar();
     }
 
-    public void aStar(){
-
-        //open set
+    public ArrayList<Node> aStar(){
         List<Node> closedSet = new ArrayList<>();
         List<Node> openSet = new ArrayList<>();
-
         openSet.add(start);
 
         while (openSet.size() != 0) {
             for (Node n : openSet) {
-                if ((current == null) | (n.getNodecost() < current.getNodecost())) {
+                if ((current == null) || (n.getNodecost() < current.getNodecost())) {
                     current = n;
                 }
             }
@@ -35,13 +35,12 @@ public class Solve {
         //henter ut og lagrer alle naboer til noden
         ArrayList<Node> nb = getNeighbors(current);
 
-
-        //dette funker ikke i det hele tatt. fiks
+        //Finding shortest path
         for (Node neighbor : nb) {
             if (closedSet.contains(neighbor)) {
                 continue;
             }
-            if (neighbor.getType() == "closed") {
+            if (neighbor.getType().equals("closed")) {
                 continue;
             }
 
@@ -57,6 +56,7 @@ public class Solve {
             neighbor.setParent(current);
             neighbor.setDistance(tentative);
         }
+        return getSolution();
     }
 
     //Function that gets all the immediate neighbors for a node.
@@ -78,5 +78,17 @@ public class Solve {
         }
         System.out.println(neighbors);
         return neighbors;
+    }
+
+    private ArrayList<Node> getSolution(){
+        ArrayList<Node> solution = new ArrayList<>();
+        solution.add(goal);
+        Node parent = goal.getParent();
+
+        while (parent != null){
+            solution.add(parent);
+            parent = parent.getParent();
+        }
+        return solution;
     }
 }
