@@ -10,14 +10,12 @@ public class Program {
     private Node start;
     private Node end;
     //This is the board as a string.
-    private String board;
-    private String visboard;
+    private String board = "";
+    private String visboard = "";
 
     public void run() throws IOException {
         readBoard();
-        ArrayList<Node> solution;
-        solution = new Solve(start, end, nodes).aStar();
-        System.out.println(solution);
+        ArrayList<Node> solution = new Solve(start, end, nodes).aStar();
     }
 
     //Reading from txt file and saving content as string
@@ -31,24 +29,22 @@ public class Program {
         }
         System.out.println(visboard);
         br.close();
-        classifyNodes();
-    }
 
-    //metode som finner leser gjennom board og lager noder. Sjekker også om vi finner A/B (start/slutt)
-    private void classifyNodes() {
+        //start på null
         int x = 1;
         int y = 1;
-        int bredde = 20;
+        int width = 20;
         for (int i = 0; i < board.length(); i++) {
             char c = board.charAt(i);
 
-            if (i % (bredde) == 0 && i!=0) {
+            if (i % (width) == 0 && i!=0) {
                 y ++;
                 x= 1;
             }
+
+            //create a node for each char with coordinates
             Node n = new Node(x, y, c);
             nodes.add(n);
-
 
             //checks whether node is end or startnode
             if (c == 'A') {
@@ -59,14 +55,15 @@ public class Program {
             }
             x ++;
         }
-        getEstimates();
+        makeEstimates();
     }
 
-    //gets an estimate on all nodes
-    private void getEstimates(){
-        for (int i = 0; i < nodes.size(); i++){
-            estimateManhattan(nodes.get(i));
+    //Loops through all nodes and sets an estimate for each of them
+    private void makeEstimates(){
+        for (Node n : nodes){
+            estimateManhattan(n);
         }
+
     }
 
     //regner ut Manhattan distance fra node n til sluttnoden
@@ -78,7 +75,7 @@ public class Program {
         int dx = Math.abs(sx-ex);
         int dy = Math.abs(sy-ey);
         int distance = dx+dy;
-        //setter estimatet for noden
+        //Sets estimate for node n
         n.setEstimate(distance);
     }
 }

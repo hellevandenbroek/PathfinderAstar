@@ -5,7 +5,6 @@ public class Solve {
 
     private Node start;
     private Node goal;
-    private Node current;
     private ArrayList<Node> nodes = new ArrayList<>();
 
     public Solve(Node start, Node goal, ArrayList nodes) {
@@ -13,19 +12,22 @@ public class Solve {
         this.start = start;
         this.goal = goal;
         this.nodes = nodes;
-        aStar();
     }
 
     public ArrayList<Node> aStar(){
+
         List<Node> closedSet = new ArrayList<>();
         List<Node> openSet = new ArrayList<>();
         openSet.add(start);
 
-
-        //NB: INFINITE LOOP. DO NOT RUN
-        while (openSet.size() != 0) {
+        while(openSet.size() != 0){
+            Node current = null;
             for (Node n : openSet) {
-                if ((current == null) || (n.getNodecost() < current.getNodecost())) {
+                if(current == null){
+                    current = n;
+                }
+
+                if ((n.getTotalNodeCost() < current.getTotalNodeCost())) {
                     current = n;
                 }
             }
@@ -37,6 +39,7 @@ public class Solve {
             openSet.remove(current);
             closedSet.add(current);
 
+
             //henter ut og lagrer alle naboer til noden
             ArrayList<Node> nb = getNeighbors(current);
             //Finding shortest path
@@ -44,12 +47,10 @@ public class Solve {
                 if (closedSet.contains(neighbor)) {
                     continue;
                 }
-                if (neighbor.getType().equals("closed")) {
+                if ("wall".equals(neighbor.getType())) {
                     continue;
                 }
-
                 int tentative = current.getDistance() + neighbor.getNodecost();
-
                 if (!openSet.contains(neighbor)) {
                     openSet.add(neighbor);
                 } else if (tentative >= neighbor.getDistance()) {
@@ -74,7 +75,6 @@ public class Solve {
                 neighbors.add(node);
             }
         }
-        //Only for debugging, remember to remove
         return neighbors;
     }
 
@@ -87,7 +87,11 @@ public class Solve {
             solution.add(parent);
             parent = parent.getParent();
         }
-        System.out.println(solution);
+
+        for (Node n : solution){
+            System.out.println(n.getX() + ", " + n.getY());
+        }
+
         return solution;
     }
 }
