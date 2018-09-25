@@ -15,7 +15,6 @@ public class Solve {
     }
 
     public ArrayList<Node> aStar(){
-
         List<Node> closedSet = new ArrayList<>();
         List<Node> openSet = new ArrayList<>();
         openSet.add(start);
@@ -87,11 +86,6 @@ public class Solve {
             solution.add(parent);
             parent = parent.getParent();
         }
-
-        for (Node n : solution){
-            System.out.println(n.getX() + ", " + n.getY());
-        }
-
         return solution;
     }
 }
