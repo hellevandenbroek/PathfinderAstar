@@ -8,20 +8,22 @@ public class Node {
     private String type;
     private Node parent;
 
-    public Node(int x, int y, char z) {
+    public Node(int x, int y, char c) {
         this.x = x;
         this.y = y;
+        this.distance = 999999;
 
-        if (z == '.') {
+        if (c == '.') {
             this.type = "open";
+            nodecost = 1;
         }
-        else if (z == 'A') {
+        else if (c == 'A') {
             this.type = "start";
         }
-        else if (z == 'B') {
+        else if (c == 'B') {
             this.type = "end";
         }
-        else if (z == '#') {
+        else if (c == '#') {
             this.type = "wall";
         }
     }
@@ -64,5 +66,9 @@ public class Node {
 
     public Node getParent() {
         return parent;
+    }
+
+    public int getTotalNodeCost() {
+        return this.estimate + this.distance;
     }
 }
