@@ -11,20 +11,17 @@ public class Node {
     public Node(int x, int y, char c) {
         this.x = x;
         this.y = y;
-        this.distance = 999999;
 
-        if (c == '.') {
-            this.type = "open";
-            nodecost = 1;
-        }
-        else if (c == 'A') {
-            this.type = "start";
-        }
-        else if (c == 'B') {
-            this.type = "end";
-        }
-        else if (c == '#') {
-            this.type = "wall";
+        switch(c){
+            case 'A' : this.type = "start"; break;
+            case 'B' : this.type = "end"; break;
+            case '.' : this.type = "open"; break;
+            case '#' : this.type = "wall"; break;
+            case 'w' : this.type = "water"; this.nodecost = 100; break;
+            case 'm' : this.type = "mountain"; this.nodecost = 50; break;
+            case 'f' : this.type = "forest"; this.nodecost = 10; break;
+            case 'g' : this.type = "grassland"; this.nodecost = 5; break;
+            case 'r' : this.type = "road"; this.nodecost = 1; break;
         }
     }
 

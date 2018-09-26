@@ -7,13 +7,14 @@ public class Solve {
     private Node goal;
     private ArrayList<Node> nodes = new ArrayList<>();
 
-    public Solve(Node start, Node goal, ArrayList nodes) {
+    public Solve(Node start, ArrayList nodes) {
         start.setDistance(0);
         this.start = start;
-        this.goal = goal;
         this.nodes = nodes;
     }
 
+
+    //A* algorithm
     public ArrayList<Node> aStar(){
         List<Node> closedSet = new ArrayList<>();
         List<Node> openSet = new ArrayList<>();
@@ -25,12 +26,10 @@ public class Solve {
                 if(current == null){
                     current = n;
                 }
-
                 if ((n.getTotalNodeCost() < current.getTotalNodeCost())) {
                     current = n;
                 }
             }
-
             if (current.getType().equals("end")){
                 this.goal = current;
                 break;
@@ -38,9 +37,9 @@ public class Solve {
             openSet.remove(current);
             closedSet.add(current);
 
-
-            //henter ut og lagrer alle naboer til noden
+            //Calling getNeighbors for our current node
             ArrayList<Node> nb = getNeighbors(current);
+
             //Finding shortest path
             for (Node neighbor : nb) {
                 if (closedSet.contains(neighbor)) {
@@ -77,6 +76,7 @@ public class Solve {
         return neighbors;
     }
 
+    //Getting our solution by tracing back all parent nodes for each node traversed
     private ArrayList<Node> getSolution(){
         ArrayList<Node> solution = new ArrayList<>();
         solution.add(this.goal);
