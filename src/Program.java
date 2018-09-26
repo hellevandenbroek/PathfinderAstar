@@ -2,7 +2,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Program {
@@ -12,15 +11,18 @@ public class Program {
     private Node end;
 
     public void run() throws IOException {
+        //reading the board and creating Node-elements
         readBoard();
-        ArrayList<Node> solution = new Solve(start, end, nodes).aStar();
+        //solving the board, finding shortest path
+        ArrayList<Node> solution = new Solve(start, nodes).aStar();
+        //creating a picture from the found solution
         Picture p = new Picture(nodes, solution);
 
     }
 
     //Reading from txt file and saving content as string
     private void readBoard() throws IOException {
-        File file = new File("./boards/board-1-1.txt");
+        File file = new File("./boards/board-2-1.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         int x = 1;
@@ -31,6 +33,7 @@ public class Program {
             for (char c : br_list) {
                 Node n = new Node(x, y, c);
                 nodes.add(n);
+                //Finding start and end node while creating
                 if (c == 'A') {
                     this.start = n;
                 } else if (c == 'B') {
@@ -42,17 +45,18 @@ public class Program {
             y++;
         }
         br.close();
+        //calling make estimates after all nodes are created
         makeEstimates();
     }
 
-    //Loops through all nodes and sets an estimate for each of them
+    //loops through all nodes and sets an estimate for each of them
     private void makeEstimates(){
         for (Node n : nodes){
             estimateManhattan(n);
         }
     }
 
-    //regner ut Manhattan distance fra node n til sluttnoden
+    //calculates the Manhattan-distance from node n to end-node
     private void estimateManhattan(Node n) {
         int sx = n.getX();
         int sy = n.getY();
@@ -61,7 +65,7 @@ public class Program {
         int dx = Math.abs(sx-ex);
         int dy = Math.abs(sy-ey);
         int distance = dx+dy;
-        //Sets estimate for node n
+        //sets estimate for node n
         n.setEstimate(distance);
     }
 }
