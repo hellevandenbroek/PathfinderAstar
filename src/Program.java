@@ -22,7 +22,7 @@ public class Program {
 
     //Reading from txt file and saving content as string
     private void readBoard() throws IOException {
-        File file = new File("./boards/board-2-1.txt");
+        File file = new File("./boards/board-2-4.txt");
         BufferedReader br = new BufferedReader(new FileReader(file));
         String st;
         int x = 1;
